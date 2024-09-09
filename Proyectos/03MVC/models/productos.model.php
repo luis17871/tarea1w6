@@ -8,22 +8,22 @@ class Producto
     {
         $con = new ClaseConectar();
         $con = $con->ProcedimientoParaConectar();
-        $cadena = "SELECT p.idProductos, 
-       p.Codigo_Barras, 
-       p.Nombre_Producto, 
-       p.Graba_IVA, 
-       u.Detalle as Unidad_Medida, 
-       i.Detalle as IVA_Detalle, 
-       k.Cantidad, 
-       k.Fecha_Transaccion, 
-       k.Valor_Compra, 
-       k.Valor_Venta, 
+        $cadena = "SELECT p.idProductos,
+       p.Codigo_Barras,
+       p.Nombre_Producto,
+       p.Graba_IVA,
+       u.Detalle as Unidad_Medida,
+       i.Detalle as IVA_Detalle,
+       k.Cantidad,
+       k.Fecha_Transaccion,
+       k.Valor_Compra,
+       k.Valor_Venta,
        k.Tipo_Transaccion
-FROM `Productos` p
-INNER JOIN `Unidad_Medida` u ON p.idProductos = u.idUnidad_Medida
-INNER JOIN `IVA` i ON p.Graba_IVA = i.idIVA
-INNER JOIN `Kardex` k ON p.idProductos = k.Productos_idProductos
-where k.`Estado` = 1
+FROM Productos p
+INNER JOIN Kardex k ON p.idProductos = k.Productos_idProductos
+INNER JOIN Unidad_Medida u ON k.Unidad_Medida_idUnidad_Medida = u.idUnidad_Medida
+INNER JOIN IVA i ON p.Graba_IVA = i.idIVA
+
 ";
         $datos = mysqli_query($con, $cadena);
         $con->close();
@@ -34,11 +34,20 @@ where k.`Estado` = 1
     {
         $con = new ClaseConectar();
         $con = $con->ProcedimientoParaConectar();
-        $cadena = "SELECT p.*, u.Detalle as Unidad_Medida, i.Detalle as IVA_Detalle 
-                   FROM `Productos` p 
-                   INNER JOIN Unidad_Medida u ON p.idProductos = u.idUnidad_Medida 
-                   INNER JOIN IVA i ON p.Graba_IVA = i.idIVA 
-                   WHERE p.idProductos = $idProductos";
+        $cadena = "SELECT 
+    p.idProductos,
+    p.Codigo_Barras,
+    p.Nombre_Producto,
+    p.Graba_IVA,
+    k.Unidad_Medida_idUnidad_Medida, 
+    p.Graba_IVA as IVA_idIVA, 
+    k.Valor_Compra,
+    k.Valor_Venta,
+    k.Cantidad,
+    k.Proveedores_idProveedores 
+     FROM Productos p
+    INNER JOIN Kardex k ON p.idProductos = k.Productos_idProductos
+WHERE p.idProductos  = $idProductos";
         $datos = mysqli_query($con, $cadena);
         $con->close();
         return $datos;

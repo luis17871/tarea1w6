@@ -28,6 +28,7 @@ export class NuevaunidadmedidaComponent implements OnInit {
     if(this.id > 0){
       this.unidadService.uno(this.id).subscribe(
         (unaunidad)=>{
+          console.log(unaunidad)
           this.frm_UnidadMedida.controls['Detalle'].setValue(unaunidad.Detalle);
           this.frm_UnidadMedida.controls['Tipo'].setValue(unaunidad.Tipo);
           this.titulo = 'Editar Unidad de Medida';
@@ -50,13 +51,13 @@ export class NuevaunidadmedidaComponent implements OnInit {
       Detalle: this.frm_UnidadMedida.get('Detalle')?.value,
       Tipo: this.frm_UnidadMedida.get('Tipo')?.value
     };
-    if (this.idUnidadMedida == 0) {
+    if (this.id == 0) {
       this.unidadService.insertar(unidadmedida).subscribe((x) => {
         Swal.fire('Exito', 'La unidad de medida se grabo con exito', 'success');
         this.navegacion.navigate(['/unidadmedida']);
       });
     } else {
-      unidadmedida.idUnidad_Medida = this.idUnidadMedida;
+      unidadmedida.idUnidad_Medida = this.id;
       this.unidadService.actualizar(unidadmedida).subscribe((x) => {
         Swal.fire('Exito', 'La unidad de medida se modifico con exito', 'success');
         this.navegacion.navigate(['/unidadmedida']);

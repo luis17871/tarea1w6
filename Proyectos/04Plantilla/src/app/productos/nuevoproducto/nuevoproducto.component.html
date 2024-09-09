@@ -62,11 +62,13 @@
         </div>
 
         <div class="form-group mb-3">
-          <label class="form-label" for="IVA_idIVA">IVA</label>
+          <label class="form-label" for="idIVA">IVA</label>
           <select formControlName="IVA_idIVA" class="form-control" id="IVA_idIVA">
-            <!--<option *ngFor="let iva of ivas" [value]="iva.idIVA">
-              {{ iva.Detalle }}
-            </option>-->
+            @for (unidad of listaIvas; track $index) {
+              <option [value]="unidad.idIVA">
+                {{ unidad.Detalle }}
+              </option>
+            }
           </select>
         </div>
 
@@ -118,7 +120,7 @@
         </div>
 
         <div class="d-grid mt-3">
-          <button type="submit" class="btn btn-primary" [disabled]="frm_Producto.invalid">Grabar</button>
+          <button type="submit" class="btn btn-primary">Grabar</button>
         </div>
       </div>
     </form>
